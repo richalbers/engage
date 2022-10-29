@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+// File: engage.html
+//
+// Parameters (passed to webpage) 
+//	  class - class (matches google sheet workbook name)
+//			If not provided, nothing gets displayed
+//    room - room: S182, S182, or S183 (determines seat layout)
+//          If not provided, detaults to 182
+//	  userName - Moodle UserName (name needs to be in associated google spreadsheet workbook.  
+//			If not provided, shows seating chart but doesn't accept any input
+//
+//	  e.g: engage.html?class=CS-161-01&room=S182&userName=richa  (userName is from Moodle: e.g. richa)
+-->
+<head>
+	<meta charset="UTF-8">
+	<title>Engage</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> <!--dialog box -->
+	<link type="text/css" rel="stylesheet" href="engage.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> <!-- Dialog box -->
+	<script type="text/javascript" src="wheel.js"></script>
+	<script type="text/javascript" src="engage.js"></script>
+</head>
+	
+<body>
+	<!-- ============ Heading =========== -->
+	
+	<div id="Heading">
+		<div id="info" style="position: absolute; top: 15px; right: 10px;"><p>Room<br>userName</p></div>
+		<h1>Engage!</h1>
+	</div>
+
+	<!-- ============ Menu =========== -->
+	<nav id="menu">
+		<div class="menuOffset">&nbsp;</div>
+		<!-- note: this div is filled with MenuItem divs (each representing a "tab") via javascript when page loads -->
+	</nav>
+	
+	<!-- ============ Content Pages =========== -->		
+	<section id="seatingChart" data-menutext="Seating Chart" class="student">
+		<p class="lblFrontOfRoom">Front of Room<p>
+		<p id="lblAddToChart">Click on your seat to add your name to the chart</p>
+		<table id="seatingChartFromBack"></table>
+		<button class="btnUpdateChart" type="button">UPDATE</button>
+		<div class="msgUpdateSeatingChart">Updating chart...</div>
+	</section>
+
+	<section id="answerSection" data-menutext="Answer Entry" class="student">
+		<span id="lblAnsInst">When prompted, enter an answer below and press submit</span><br>
+		<!-- <input id="answer" size="80" name="answer" type="text"></input><br> -->
+		<textarea id="answer" rows="15" cols="80" name="answer" type="text" spellcheck="false"></textarea> <br>
+		<button id="btnSubmitAnswer" type="button">Submit</button>
+		<span id="msgSubmit"></span>
+	</section>
+	
+	<section id="answerDisplaySection" data-menutext="Answer Display" class="instructor">
+		<table id="seatingChartFromFront"></table>
+		<p class="lblFrontOfRoom">Front of Room</p>
+		<button class="btnUpdateChart" type="button">Update</button>
+		<span class="msgUpdateSeatingChart">Updating chart...</span>
+		
+		<hr>
+		
+		<div id="answerControls">
+			<button id="btnGetAnswers" type="button">Get Answers</button><br>
+			<button id="btnShowAnswers" type="button">Show Answers</button><br>
+			<button id="btnAwardPoints" type="button" title="Award points for checked (green) answers)">Award Points</button><br>
+			<button id="btnClearAnswers" type="button">Clear Answers</button><br>
+			<button id="btnShowLeaders" type="button" title="Show top 10 students)">Show Leaders</button><br>
+		</div>
+		<div id="answers"></div>		
+	</section>
+		
+
+	<section id="wheelSection" data-menutext="Wheel of Misfortune" class="instructor">
+		<div id="wheelControls" style="float: left">
+			<button id="btnWheelLoadAll" type="button"> Load All Names </button> 
+			<button id="btnWheelSpin" style="position: relative; top: 100; left: 50;"> Spin </button>
+			<br><button id="btnWheelLoadTop" type="button"> Load Top 5 </button> &nbsp; &nbsp; 
+
+			<div id="wheelNameList">
+			</div>
+		</div>
+		<canvas id="canvasWheel" width="600" height="500" style="float: left; zborder: solid 1px black"></canvas><br><br>
+	</section>
+	
+	<section id="noteSection" data-menutext="Notes" class="instructor">
+		<textarea id="note" rows="25" cols="100" name="note" type="text" spellcheck="false"></textarea> <br>
+		<button id="btnSaveNote" type="button">Save</button>
+		<span id="msgSaveNote"></span>
+	</section>
+	
+	<!-- ============ Dialog Boxes =========== -->
+	<div id = "dlgPasswordEntry">
+		<label for = "password">Password: </label>
+		<input type = "password" id = "password">
+    </div>
+	  
+	<!-- ============ footer =========== -->	
+	<div id="footer">
+		<div id="authorInfo">Design & Programming by Rich Albers<br>Dark Color Scheme by Dominick Stanley &nbsp;</div> <!-- Added my name -->
+	</div>
+	
+</body>
+</html>
+
