@@ -207,7 +207,7 @@ td {
 /* changed border colors to black on answers */
 .answerNotSubmitted {
 	border-color: black;
-	color: red;
+	color: darkred;
 }
 
 /* answer entry & display ----------------------------------------------- */
