@@ -42,7 +42,7 @@
 	<section id="seatingChart" data-menutext="Seating Chart" class="student">
 		<p class="lblFrontOfRoom">Front of Room<p>
 		<p id="lblAddToChart">Click on your seat to add your name to the chart</p>
-		<table id="seatingChartFromBack"></table>
+		<table class="seatingChart"></table>
 		<button class="btnUpdateChart" type="button">UPDATE</button>
 		<div class="msgUpdateSeatingChart">Updating chart...</div>
 	</section>
@@ -56,8 +56,8 @@
 	</section>
 	
 	<section id="answerDisplaySection" data-menutext="Answer Display" class="instructor">
-		<table id="seatingChartFromFront"></table>
-		<p class="lblFrontOfRoom">Front of Room</p>
+		<!-- note: "front of room" msg added via code either before or after table -->
+		<table class="seatingChart"></table>
 		<button class="btnUpdateChart" type="button">Update</button>
 		<span class="msgUpdateSeatingChart">Updating chart...</span>
 		
