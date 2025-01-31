@@ -122,6 +122,7 @@ button:hover {
 	text-align: center;
 	font-size: 14px;
 	margin: 0px;
+	margin-bottom: 10px;
 	padding: 0px;
 	color: whitesmoke;
 }
@@ -137,7 +138,7 @@ button:hover {
 }
 /* seating chart */
 
-#seatingChartFromBack, #seatingChartFromFront {
+.seatingChart {
 	margin: auto;
 }
 
