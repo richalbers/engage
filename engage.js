@@ -477,16 +477,34 @@ $(document).ready(function() {
 		else
 			seats = seats182; 
 		
-		var seatingChartTableID="#seatingChartFromBack";
+		//seating chart tab (oriented the way instructor students are facing)
+		tableSelector="#seatingChart table";
+		buildSeatingChartFacingFront(tableSelector, seats);
+
+		//answer display tab (oriented the way instructor is facing, which differs by room)
+		tableSelector="#answerDisplaySection table";
+		if (room=="B277") {
+			buildSeatingChartFacingFront(tableSelector, seats);
+			$('<p class="lblFrontOfRoom">Front of Room</p>').insertBefore(tableSelector);	
+		} else {
+			buildSeatingChartFacingBack(tableSelector, seats);
+			$('<p class="lblFrontOfRoom">Front of Room</p>').insertAfter(tableSelector);	
+		}
+	}
+	
+	//=======================================================================	
+	function buildSeatingChartFacingFront(seatingChartTableID, seats) {
 		for (var row=0; row<seats.length; row++){  
 			$(seatingChartTableID).append('<tr></tr>');
 			for(var col=0; col<seats[row].length; col++) {
 				var seatNum=seats[row][col];
 				addTDtoLastTR(seatingChartTableID, seatNum);
 			}
-		}		
-
-		seatingChartTableID="#seatingChartFromFront";
+		}	
+	}
+	
+	//=======================================================================	
+	function buildSeatingChartFacingBack(seatingChartTableID, seats) {
 		for (var row=seats.length-1; row>=0; row--){  
 			$(seatingChartTableID).append('<tr></tr>');
 			for(var col=seats[row].length-1; col>=0; col--) {
@@ -494,7 +512,7 @@ $(document).ready(function() {
 				addTDtoLastTR(seatingChartTableID, seatNum);
 			}
 		}
-	}
+	}	
 	
 	//=======================================================================
 	function addTDtoLastTR(seatingChartID, seatNum) {
