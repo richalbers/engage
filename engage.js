@@ -482,7 +482,7 @@ $(document).ready(function() {
 		buildSeatingChartFacingFront(tableSelector, seats);
 
 		//answer display tab (oriented the way instructor is facing, which differs by room)
-		tableSelector="#answerDisplaySection table";
+		tableSelector="#seatingChartAnsDisp";
 		if (room=="B277") {
 			buildSeatingChartFacingFront(tableSelector, seats);
 			$('<p class="lblFrontOfRoom">Front of Room</p>').insertBefore(tableSelector);	
@@ -621,7 +621,7 @@ $(document).ready(function() {
 		var count=0;
 		for (var ndx=0; ndx<studentInfoArray.length; ndx++)  {
 			//selector for seat to mark as submitted/notSubmitted
-			var selector='#seatingChartFromFront *[data-seatnum="' + studentInfoArray[ndx].seat + '"]';
+			var selector='#seatingChartAnsDisp *[data-seatnum="' + studentInfoArray[ndx].seat + '"]';
 			
 			if (studentInfoArray[ndx].answer != "") {
 				//add answer to list (hidden for now)
