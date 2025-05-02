@@ -676,11 +676,11 @@ $(document).ready(function() {
 				var answer = formatAsHtml(studentInfoArray[ndx].answer);
 				var dataAttr='data-seatnum="' + studentInfoArray[ndx].seat + '" ';
 				$("#answers").append('<div class="answer hidden"' + dataAttr + '>'
-					+ '<button class="xButton">X</button>'
-					+ '<button class="checkmarkButton">&#x2713;</button>'
 					+ '&nbsp;&nbsp;'
 					+ '<span>' + answer + '<span>'
 					+ '<button class="authorButton" data-name="' + studentInfoArray[ndx].fullName +'">Author</button>'
+					+ '<button class="checkmarkButton">&#x2713;</button>'
+					+ '<button class="xButton">X</button>'
 					+ '</div>');
 				count++;
 				//denote seat/user submitted answer
