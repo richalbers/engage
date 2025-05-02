@@ -736,8 +736,8 @@ $(document).ready(function() {
 	//========================================================================
 	//format as html
 	function formatAsHtml(s1) {
-		var s2=s1.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
-		var s3=s2.replace(/ /g, "&nbsp;");
+		var s2=s1.replace(/\t/g, "&nbsp;&nbsp; &nbsp;");
+		var s3=s2.replace(/  /g, "&nbsp; ");
 		var s4=s3.replace(/\n/g, "<br>");
 		return(s4); 
 	}
