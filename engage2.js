@@ -15,7 +15,7 @@
 $(document).ready(function() {
 	//Note:  all functions are defined inside this function 
 	//		 so they all have access to these variables.
-	const googleScriptURL=	"https://script.google.com/macros/s/AKfycbwyw0uTqKpPmTG639nf52TH4bPcHRUJ2gYwL8ev0HmF9-a9C6jLd7jwHjp7-4eIf96o/exec"
+	const googleScriptURL=	"https://script.google.com/macros/s/AKfycbyERmzsrZasnr5LcfThJ_IMrBfn-6TIJfL0YVM1EThK2fWcVRwzpDxcWr3Srol1EIF6/exec"
 
 	//parameters
 	var classSection=getUrlParameter("class");
