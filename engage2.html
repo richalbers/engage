@@ -15,9 +15,9 @@
 -->
 <head>
 	<meta charset="UTF-8">
-	<title>Engage2</title>
+	<title>Engage</title>
     <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> <!--dialog box -->
-	<link type="text/css" rel="stylesheet" href="engage.css">
+	<link type="text/css" rel="stylesheet" href="engage2.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> <!-- Dialog box -->
 	<script type="text/javascript" src="wheel.js"></script>
@@ -44,17 +44,17 @@
 		<p id="lblAddToChart">Click on your seat to add your name to the chart</p>
 		<table class="seatingChart"></table>
 		<button class="btnUpdateChart" type="button">UPDATE</button>
-		<div class="msgUpdateSeatingChart">Updating chart...</div>
+		<span class="msgUpdateSeatingChart">Updating chart...</span>
+
+		<div id="seatingChartQuestion">
+		<hr />
+		<span id="lblQstInst">You can submit a question to the instructor be entering it below and pressing submit.</span><br><br>
+		<textarea id="question" rows="2" cols="80" name="question" type="text" spellcheck="false"></textarea> <br><br>
+		<button id="btnSubmitQuestion" type="button">Submit</button>
+		<span id="msgQuestionSubmit" class="red"</span> 
+		</div>
 	</section>
 
-	<section id="answerSection" data-menutext="Answer Entry" class="student">
-		<span id="lblAnsInst">When prompted, enter an answer below and press submit</span><br>
-		<!-- <input id="answer" size="80" name="answer" type="text"></input><br> -->
-		<textarea id="answer" rows="15" cols="80" name="answer" type="text" spellcheck="false"></textarea> <br>
-		<button id="btnSubmitAnswer" type="button">Submit</button>
-		<span id="msgSubmit"></span>
-	</section>
-	
 	<section id="answerDisplaySection" data-menutext="Answer Display" class="instructor">
 		<!-- note: "front of room" msg added via code either before or after table -->
 		<table id="seatingChartAnsDisp" class="seatingChart"></table>
@@ -72,8 +72,11 @@
 		</div>
 		<div id="answers"></div>		
 	</section>
+	
+	<section id="questionDisplaySection" data-menutext="Question Display" class="instructor">
+		<div id="questions"></div>		
+	</section>
 		
-
 	<section id="wheelSection" data-menutext="Wheel of Misfortune" class="instructor">
 		<div id="wheelControls" style="float: left">
 			<button id="btnWheelLoadAll" type="button"> Load All Names </button> 
@@ -92,6 +95,25 @@
 		<span id="msgSaveNote"></span>
 	</section>
 	
+	<section id="answerSection" data-menutext="Answer Entry" class="student">
+		<br />
+		<span id="lblQstInst">Use this form to answer questions given by the instructor during class.<br>When prompted, enter your answer below and press submit.</span><br><br>
+		<!-- <input id="answer" size="80" name="answer" type="text"></input><br> -->
+		<textarea id="answer" rows="15" cols="80" name="answer" type="text" spellcheck="false"></textarea> <br>
+		<button id="btnSubmitAnswer" type="button">Submit</button>
+		<span id="msgAnswerSubmit" class="red"</span>
+	</section>
+
+	<!-- 
+	<section id="questionSection" data-menutext="Question Entry" class="student">
+		<br />
+		<span id="lblQstInst">Use this form to send a question to the instructor.<br>Enter your question below and press submit.</span><br><br>
+		<textarea id="question" rows="2" cols="80" name="question" type="text" spellcheck="false"></textarea> <br><br>
+		<button id="btnSubmitQuestion" type="button">Submit</button>
+		<span id="msgQuestionSubmit" class="red"</span> 
+	</section>
+	-->
+	
 	<!-- ============ Dialog Boxes =========== -->
 	<div id = "dlgPasswordEntry">
 		<label for = "password">Password: </label>
@@ -105,3 +127,4 @@
 	
 </body>
 </html>
+
