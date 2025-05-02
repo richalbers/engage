@@ -1,4 +1,4 @@
-// File: engage.js
+/ File: engage2.js - TEST VERSION
 //
 // Parameters (passed to webpage) 
 //    class - class (matches google sheet workbook name)
@@ -15,7 +15,7 @@
 $(document).ready(function() {
 	//Note:  all functions are defined inside this function 
 	//		 so they all have access to these variables.
-	const googleScriptURL="https://script.google.com/macros/s/AKfycbyERmzsrZasnr5LcfThJ_IMrBfn-6TIJfL0YVM1EThK2fWcVRwzpDxcWr3Srol1EIF6/exec"
+	const googleScriptURL=	"https://script.google.com/macros/s/AKfycbwyw0uTqKpPmTG639nf52TH4bPcHRUJ2gYwL8ev0HmF9-a9C6jLd7jwHjp7-4eIf96o/exec"
 
 	//parameters
 	var classSection=getUrlParameter("class");
@@ -30,8 +30,8 @@ $(document).ready(function() {
 	var wheel = new Wheel("canvasWheel");
 	wheel.draw();
 	
-	
-	//=====================END OF TESTING==========================================
+	//timer for checking for questions 
+	timerID=0;
 	
 	
 	allowTabsToBeInput('textarea'); //so users can enter tabs in answers
@@ -84,6 +84,7 @@ $(document).ready(function() {
 		$('<div class="menuItem"></div>')
 			.html(menuText)
 			.data("contentid", contentID)
+			.attr("id",contentID+"Tab")
 			.appendTo("#menu");
 		if ( $(this).hasClass("instructor") )
 			$(".menuItem:last").addClass("instructor");
@@ -146,11 +147,12 @@ $(document).ready(function() {
 			for (ndx=0;ndx<studentInfoArray.length && validated==false; ndx++)
 				if (studentInfoArray[ndx].userName==userName && studentInfoArray[ndx].seat=='99')
 					validated = true;
-			//if validated, show instructor tabs 
+			//if validated, show instructor tabs and start timer (to poll for questions)
 			if ( validated == true) { 
 				$('#note').val(studentInfoArray[--ndx].note);				
 				$(".instructor").show();
 				$(".menuItem:first" ).trigger( "click" );
+				startTimer();
 			} else {
 				$(".instructor").hide();
 				$('<div>Invalid password.</div>').dialog({
@@ -164,7 +166,26 @@ $(document).ready(function() {
 			} //else
 		});
 	}
+
+	//------------------------------------------------------
+	function startTimer() {
+		//if it's already started ignore.
+		if (timerID > 0)
+			return;
 	
+		//set initial speed
+		var intervalSeconds=15;
+	
+		//get questions now and every 10 seconds
+		function callBack() {
+			getData( {'class': classSection, 'userName':userName, 'password': password, 'getQuestions': true}, function( data ) {
+				loadQuestions( data );
+				console.log("loading questions");
+			});
+		}
+		callBack();
+		timerID = setInterval(callBack, intervalSeconds*1000); //convert interval to MS
+	}
 	
 	//-----------------------------------------------------
 	// general handlers (enabled for everyone)
@@ -188,6 +209,8 @@ $(document).ready(function() {
 				if (nameInList==false) { 
 					var errMsg = "Error: username ("+userName +") is not on classList <br>(please let instructor know).";
 					showErrorDlgBox("Error: unknown userName", errMsg);
+				} else if (seatNum!=99) {
+					$("#seatingChartQuestion").show(); //shows only for seated students
 				}
 			});
 		};
@@ -202,19 +225,33 @@ $(document).ready(function() {
 
 	//if answer textarea is modified, erase submit msg
 	$('#answer').keyup(function() {
-		$('#msgSubmit').html("");
+		$('#msgAnswerSubmit').html("");
 	});
 	
 	//if answer submit button is clicked, submit answer
 	$('#btnSubmitAnswer').click(function() {
 		var answer=preSanitize($('#answer').val()); //actual sanitization is done on server
-		$('#msgSubmit').html("submitting...");
+		$('#msgAnswerSubmit').html("submitting...");
 		getData( {'class': classSection, 'userName':userName, 'answer':answer}, function( data ) {
 			updateSeatingChart( data );
-			$('#msgSubmit').html("Submitted!"); // Changed from "submitted." to a more excited "Submitted!"
+			$('#msgAnswerSubmit').html("Submitted!"); 
 		});
 	});
 	
+	//if question textarea is modified, erase submit msg
+	$('#question').keyup(function() {
+		$('#msgQuestionSubmit').html("");
+	});
+	
+	//if answer submit button is clicked, submit answer
+	$('#btnSubmitQuestion').click(function() {
+		var question=preSanitize($('#question').val()); //actual sanitization is done on server
+		$('#msgQuestionSubmit').html("submitting...");
+		getData( {'class': classSection, 'userName':userName, 'question':question}, function( data ) {
+			updateSeatingChart( data );
+			$('#msgQuestionSubmit').html("Submitted!"); 
+		});
+	});	
 	
 	//-----------------------------------------------------------
 	// instructor event handlers
@@ -234,11 +271,12 @@ $(document).ready(function() {
 			$(".answerSubmitted").removeClass("answerSubmitted");
 			$(".answerNotSubmitted").removeClass("answerNotSubmitted");
 			loadAnswers( data );
-			$('.answer').addClass('hidden');	
+			$('.answer').addClass('hidden');
+			//loadQuestions( data ); //TODO: move this call to a timer, call every 10 seconds
 		});
 	});
 	
-	// showAnswers button is clicked, fetch answers and display
+	// showAnswers button is clicked, display answers (previously fetched)
 	$('#btnShowAnswers').click(function() {
 		$('.answer').removeClass('hidden');
 	});
@@ -264,7 +302,7 @@ $(document).ready(function() {
 	});//click
 	
 	// show author button 
-	$('#answers').on("click", ".authorButton", function() {
+	$('#answers, #questions').on("click", ".authorButton", function() {
 		if ( $(this).html()=="Author" )
 			$(this).html( $(this).attr("data-name") );
 		else
@@ -279,6 +317,14 @@ $(document).ready(function() {
 	// hide answer
 	$('#answers').on("click", ".xButton", function() {
 		$(this).parent().slideUp();
+	});
+	
+	// delete question
+	$('#questions').on("click", ".xButton", function() {
+		$(this).parent().remove(); 
+		var count = $('#questions .xButton').length;
+		if (count < 1)
+			$("#questionDisplaySectionTab").removeClass("red"); //TODO only do when last question was removed
 	});
 
 	// ===========================================================================
@@ -534,9 +580,10 @@ $(document).ready(function() {
 	// args:
 	//	args - an object (sent to server) containing one or more of the following:
 	//		classSection - mandatory
-	//		userName - required if seatNum, answer, or clear/getAnswers is given
+	//		userName - required if seatNum, answer, question, or clear/getAnswers is given
 	//		seatNum - assigns this seat to userName (for instructor seat, username/password requird)
-	//		answer - assigns this answer to userName
+	//		answer - uploads this answer for userName
+	//      question - uploads this question for userName
 	//		password (required to sit in instructor seat and for clear/get anwers & note)
 	//		clearAnswers - erases answers for all users (user/password required)
 	//		getAnswers - returns answers (userName/password required)
@@ -546,11 +593,12 @@ $(document).ready(function() {
 	function getData( args, callback ) {
 		//testing client (replaces server call
 		if (args.class == 'CLIENT-TEST') {
+			console.log("args: "+ JSON.stringify(args));
 			studentInfoArray = JSON.parse(
 			'['
-			+ '{"userName":"client.test","fullName":"Mr. Instructor","seat":"99","answer":"","note":""}, '
-			+ '{"userName":"sally.brown","fullName":"Sally Brown","seat":"3","answer":"Donuts","note":""}, '
-			+ '{"userName":"jacob.superbrain","fullName":"Superbrain Jacob","seat":"13","answer":"Pizza","note":""} '
+			+ '{"userName":"client.test","fullName":"Mr. Instructor","seat":"99","answer":"","question":"","note":""}, '
+			+ '{"userName":"sally.brown","fullName":"Sally Brown","seat":"3","answer":"Donuts","question":"Help me.","note":""}, '
+			+ '{"userName":"jacob.superbrain","fullName":"Superbrain Jacob","seat":"13","answer":"Pizza","question":"Will this be on the test?","note":""} '
 			+ ']'
 			);
 			//alert(JSON.stringify(studentInfoArray)); //test
@@ -628,9 +676,10 @@ $(document).ready(function() {
 				var answer = formatAsHtml(studentInfoArray[ndx].answer);
 				var dataAttr='data-seatnum="' + studentInfoArray[ndx].seat + '" ';
 				$("#answers").append('<div class="answer hidden"' + dataAttr + '>'
-					+ answer
 					+ '<button class="xButton">X</button>'
 					+ '<button class="checkmarkButton">&#x2713;</button>'
+					+ '&nbsp;&nbsp;'
+					+ '<span>' + answer + '<span>'
 					+ '<button class="authorButton" data-name="' + studentInfoArray[ndx].fullName +'">Author</button>'
 					+ '</div>');
 				count++;
@@ -645,6 +694,44 @@ $(document).ready(function() {
 			' answers retrieved.<br><br><br><br><br><br><br><br><br><br><br></div>');
 			//all the <br>'s are so last answer is not at bottom of projector screen.
 	}
+	
+	//=======================================================================
+	// load questions
+	// data is an array of objects from getData();
+	function loadQuestions( studentInfoArray ) {
+		//$(".questionSubmitted").removeClass("questionSubmitted");
+		
+		studentInfoArray.sort(function(a, b){
+			var x = a.question.toLowerCase();
+			var y = b.question.toLowerCase();
+			if (x < y) {return -1;}
+			if (x > y) {return 1;}
+			return 0;
+		});
+		
+		var count=0;
+		for (var ndx=0; ndx<studentInfoArray.length; ndx++)  {
+			if (studentInfoArray[ndx].question != "") {
+				//add question to list )
+				var question = formatAsHtml(studentInfoArray[ndx].question);
+				$("#questions").append('<div class="question">'
+					+ '<button class="xButton">X</button>'
+					+ '&nbsp;&nbsp;'
+					+ '<span>' + question + '</span>'
+					+ '<button class="authorButton" data-name="' + studentInfoArray[ndx].fullName +'">Author</button>'
+					+ '</div>');
+				count++;
+			} 
+		}
+
+		if (count>0)
+			$("#questionDisplaySectionTab").addClass("red");
+		else
+			$("#questionDisplaySectionTab").removeClass("red");
+		
+		//$("#question").append('<div class="msg"><br><br><br><br><br><br><br><br><br><br><br></div>');
+			//all the <br>'s are so last question is not at bottom of projector screen.
+	}	
 	
 	//========================================================================
 	//format as html
