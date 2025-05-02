@@ -1,4 +1,4 @@
-/ File: engage2.js - TEST VERSION
+// File: engage2.js - TEST VERSION
 //
 // Parameters (passed to webpage) 
 //    class - class (matches google sheet workbook name)
