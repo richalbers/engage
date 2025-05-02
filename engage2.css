@@ -204,10 +204,6 @@ td {
 	display: none;	/*hidden until student sits down*/
 }
 
-.question {
-	overflow: wrap;
-}
-
 /* changed border colors to black on answers */
 .answerSubmitted {
 	border-color: green;
@@ -308,6 +304,7 @@ textarea, pre {
 	zfont-family: "Lucida Sans Unicode", monospace;
 	font-family: "Courier New", Courier, monospace;
 	font-size: 15px;
+	overflow: wrap;
 }
 
 .red {
