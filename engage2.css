@@ -204,6 +204,10 @@ td {
 	display: none;	/*hidden until student sits down*/
 }
 
+.question {
+	overflow: wrap;
+}
+
 /* changed border colors to black on answers */
 .answerSubmitted {
 	border-color: green;
