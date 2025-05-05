@@ -204,6 +204,10 @@ td {
 	display: none;	/*hidden until student sits down*/
 }
 
+#question {
+	  width: 100%;
+}
+
 /* changed border colors to black on answers */
 .answerSubmitted {
 	border-color: green;
@@ -225,9 +229,9 @@ textarea, pre {
 	background-color: #202020;
 	color: whitesmoke;
 	font-size: 16px;
-    -moz-tab-size : 4;
-      -o-tab-size : 4;
-         tab-size : 4;
+    	-moz-tab-size : 4;
+      	-o-tab-size : 4;
+        tab-size : 4;
 }
 
 #answerControls {
