@@ -252,7 +252,8 @@ $(document).ready(function() {
 		getData( {'class': classSection, 'userName':userName, 'question':question}, function( data ) {
 			updateSeatingChart( data );
 			$('#msgQuestionSubmit').html("Submitted!"); 
-		});
+		},
+		false ); /* don't show updating message */
 	});	
 	
 	//-----------------------------------------------------------
