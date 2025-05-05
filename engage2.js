@@ -179,9 +179,11 @@ $(document).ready(function() {
 		//get questions now and every 10 seconds
 		function callBack() {
 			getData( {'class': classSection, 'userName':userName, 'password': password, 'getQuestions': true}, function( data ) {
+				updateSeatingChart(data);
 				loadQuestions( data );
 				console.log("loading questions");
-			});
+			},
+			false); //don't show "updating" message.
 		}
 		callBack();
 		timerID = setInterval(callBack, intervalSeconds*1000); //convert interval to MS
@@ -273,7 +275,7 @@ $(document).ready(function() {
 			loadAnswers( data );
 			$('.answer').addClass('hidden');
 			//loadQuestions( data ); //TODO: move this call to a timer, call every 10 seconds
-		});
+		}); 
 	});
 	
 	// showAnswers button is clicked, display answers (previously fetched)
@@ -590,7 +592,7 @@ $(document).ready(function() {
 	//		note - the note to be saved (userName/password required)
 	//	callback - routine to process data (array of student info) returned from ajax call.
 	//=======================================================================
-	function getData( args, callback ) {
+	function getData( args, callback, showMessage=true ) {
 		//testing client (replaces server call
 		if (args.class == 'CLIENT-TEST') {
 			console.log("args: "+ JSON.stringify(args));
@@ -610,7 +612,8 @@ $(document).ready(function() {
 		}
 		
 		// request data from server
-		$('.msgUpdateSeatingChart').html("Processing...");
+		if (showMessage)
+			$('.msgUpdateSeatingChart').html("Processing...");
 		$.ajax({
 			url: googleScriptURL,
 			data: args,
@@ -623,7 +626,8 @@ $(document).ready(function() {
 			$('.msgUpdateSeatingChart').html(" &nbsp; ");		
 		})
 		.fail(function( studentInfoArray ){
-			$('.msgUpdateSeatingChart').html("Error - reload Page.");
+			if (showMessage)
+				$('.msgUpdateSeatingChart').html("Error - reload Page.");
 		});
 	
 	}
