@@ -204,7 +204,7 @@ td {
 	display: none;	/*hidden until student sits down*/
 }
 
-#question {
+textArea { 	/*used for question and answer entry*/
 	  width: 100%;
 }
 
