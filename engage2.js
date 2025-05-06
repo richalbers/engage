@@ -729,8 +729,8 @@ $(document).ready(function() {
 
 		if (count>0)
 			$("#questionDisplaySectionTab").addClass("red");
-		else
-			$("#questionDisplaySectionTab").removeClass("red");
+		//else
+			//$("#questionDisplaySectionTab").removeClass("red");
 		
 		//$("#question").append('<div class="msg"><br><br><br><br><br><br><br><br><br><br><br></div>');
 			//all the <br>'s are so last question is not at bottom of projector screen.
