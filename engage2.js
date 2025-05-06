@@ -185,7 +185,7 @@ $(document).ready(function() {
 			false); //don't show "updating" message.
 		}
 		getQuestions();
-		timerID = setInterval(callBack, intervalSeconds*1000); //convert interval to MS
+		timerID = setInterval(getQuestions, intervalSeconds*1000); //convert interval to MS
 	}
 	
 	//-----------------------------------------------------
