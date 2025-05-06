@@ -173,11 +173,10 @@ $(document).ready(function() {
 		if (timerID > 0)
 			return;
 	
-		//set initial speed
-		var intervalSeconds=15;
-	
-		//get questions now and every 10 seconds
-		function callBack() {
+		//get questions every 10 seconds (and right now)
+		var intervalSeconds=10;
+			
+		function getQuestions() {
 			getData( {'class': classSection, 'userName':userName, 'password': password, 'getQuestions': true}, function( data ) {
 				updateSeatingChart(data);
 				loadQuestions( data );
@@ -185,7 +184,7 @@ $(document).ready(function() {
 			},
 			false); //don't show "updating" message.
 		}
-		callBack();
+		getQuestions();
 		timerID = setInterval(callBack, intervalSeconds*1000); //convert interval to MS
 	}
 	
