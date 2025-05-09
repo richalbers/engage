@@ -1,4 +1,4 @@
-// File: engage2.js - TEST VERSION
+// File: engage.js
 //
 // Parameters (passed to webpage) 
 //    class - class (matches google sheet workbook name)
@@ -15,7 +15,7 @@
 $(document).ready(function() {
 	//Note:  all functions are defined inside this function 
 	//		 so they all have access to these variables.
-	const googleScriptURL=	"https://script.google.com/macros/s/AKfycbzZLiqj9mdFUS3B91ckxmGA7x8XaK84OcCq-W9oRMvKoxlXPHZ0LcGnMx7ThJzqwq6L/exec"
+	const googleScriptURL=	"https://script.google.com/macros/s/AKfycbzTA_mt7qPV2D9T0KBkbdHNMl_zlS5QT0nm_KC5kV0pTxbKSYY8xHsTZSEeewjiGJ5T/exec"
 
 	//parameters
 	var classSection=getUrlParameter("class");
